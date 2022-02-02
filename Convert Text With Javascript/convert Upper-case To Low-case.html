@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Convert Text</title>
+  </head>
+  <style>
+    html {
+      background: white;
+      height: 100%;
+      overflow: hidden;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+  </style>
+  <body>
+    <canvas id="Matrix" style="position: fixed;"></canvas>
+    <div class="container">
+      <h1 class="pb-5 pt-3" style="color:white;position: relative;">Convert Text</h1>
+        <div class="card text-white bg-secondary mb-3" style="max-width: 100%;">
+          <div class="card-header">LOWER CASE</div>
+          <div class="card-body text-dark">
+            <input type="email" class="form-control" id="lowerText" onkeyup="cLowerCase()" placeholder="Please input here">
+            <p id="dLowerText" class="card-text p-2" style="cursor:pointer; color:white;" onclick="copy(this)"></p>
+          </div>
+        </div>
+
+        <div class="card text-white bg-secondary mb-3" style="max-width: 100%;">
+          <div class="card-header">UPPER CASE</div>
+          <div class="card-body text-dark">
+            <input type="email" class="form-control" id="upperText" onkeyup="cUpperCase()" placeholder="Please input here">
+            <p id="dUpperText" class="card-text p-2" style="cursor:pointer; color:white;" onclick="copy(this)"></p>
+          </div>
+        </div>
+        
+        <div id="alert" class="alert alert-success alert-dismissable">
+            Success! message sent successfully.
+        </div>
+    </div>
+
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
+  
+
+<script>
+  window.onload = hideMsg;
+  function hideMsg(){
+    document.getElementById("alert").style.display = "none";
+  }
+  function cLowerCase() {
+    var x = document.getElementById("lowerText").value;
+    document.getElementById("dLowerText").innerHTML = x.toLowerCase();
+  }
+  function cUpperCase() {
+    var x = document.getElementById("upperText").value;
+    document.getElementById("dUpperText").innerHTML = x.toUpperCase();
+  }
+  function copy(that){
+  var inp =document.createElement('input');
+    document.body.appendChild(inp)
+    inp.value =that.textContent
+    inp.select();
+    document.execCommand('copy',false);
+    inp.remove();
+    document.getElementById("alert").style.display = "block";
+    document.getElementById("alert").innerHTML = 'Copied! '.concat(inp.value);
+    setTimeout(() => {  document.getElementById("alert").style.display = "none"; }, 1000);
+  }
+  
+  const canvas = document.getElementById('Matrix');
+  const context = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+  const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const nums = '0123456789';
+
+const alphabet = katakana + latin + nums;
+  const fontSize = 16;
+  const columns = canvas.width/fontSize;
+  const rainDrops = [];
+
+  for( let x = 0; x < columns; x++ ) {
+      rainDrops[x] = 1;
+  }
+  const draw = () => {
+    context.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    //context.fillStyle = '#0F0';
+    context.fillStyle = '#4c4d4c';
+    context.font = fontSize + 'px monospace';
+
+    for(let i = 0; i < rainDrops.length; i++)
+    {
+        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        context.fillText(text, i*fontSize, rainDrops[i]*fontSize);
+
+        if(rainDrops[i]*fontSize > canvas.height && Math.random() > 0.975){
+            rainDrops[i] = 0;
+        }
+        rainDrops[i]++;
+    }
+  };
+  setInterval(draw, 80);
+</script>
+</html>
