@@ -41,10 +41,26 @@
             <p id="dUpperText" class="card-text p-2" style="cursor:pointer; color:white;" onclick="copy(this)"></p>
           </div>
         </div>
-        
-        <div id="alert" class="alert alert-success alert-dismissable">
-            Success! message sent successfully.
+
+        <div class="card text-white bg-secondary mb-3" style="max-width: 100%;">
+          <div class="card-header">TITLE CASE</div>
+          <div class="card-body text-dark">
+            <input type="email" class="form-control" id="titleText" onkeyup="cTitleCase()" placeholder="Please input here">
+            <p id="dTitleText" class="card-text p-2" style="cursor:pointer; color:white;" onclick="copy(this)"></p>
+          </div>
         </div>
+
+        
+        <div class="toast-container position-fixed top-0 end-0" style="width: 220px;background-color: transparent;">
+          <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: transparent;">
+            <div class="toast-header" style="background-color: #1fcfc2; color:white;">
+              <small>You has been copied.</small>
+            </div>
+            <div class="toast-body" style="background-color: transparent;;border-radius: 0px 0px 20px 20px; border: none; height: 164px;background-image: url('https://c.tenor.com/8ZDLU43omvcAAAAM/kid-thumbs-up.gif');background-repeat: no-repeat; background-size: cover;">
+            </div>
+          </div>
+        </div>
+
     </div>
 
     
@@ -54,6 +70,7 @@
   
 
 <script>
+
   window.onload = hideMsg;
   function hideMsg(){
     document.getElementById("alert").style.display = "none";
@@ -66,6 +83,12 @@
     var x = document.getElementById("upperText").value;
     document.getElementById("dUpperText").innerHTML = x.toUpperCase();
   }
+
+  function cTitleCase(str) {
+    var x = document.getElementById("titleText").value;
+    document.getElementById("dTitleText").innerHTML = x.replace( /\w\S*/g, function(txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); } );
+}
+
   function copy(that){
   var inp =document.createElement('input');
     document.body.appendChild(inp)
@@ -73,9 +96,9 @@
     inp.select();
     document.execCommand('copy',false);
     inp.remove();
-    document.getElementById("alert").style.display = "block";
-    document.getElementById("alert").innerHTML = 'Copied! '.concat(inp.value);
-    setTimeout(() => {  document.getElementById("alert").style.display = "none"; }, 1000);
+    const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+    toast.show();
+    setTimeout(() => {  toast.hide(); }, 4000);
   }
   
   const canvas = document.getElementById('Matrix');
@@ -84,9 +107,9 @@
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+  const katakana = 'アァカឆサタナរハマヤយャラワកガザហダバパសイィキដシチニថヒミリងヰギジហヂビピគウゥクឋスツヌខフムユចュルវグズブបヅプエェនケセテមネヘメឈレヱゲゼឬデベទペオォភコソトឡノホモញヨョロអヲゴធゾドボឌポヴッឍンឃ';
   const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const nums = '0123456789';
+  const nums = '01១2២3៣4៤5៥6៦7៧8៨9៩';
 
 const alphabet = katakana + latin + nums;
   const fontSize = 16;
